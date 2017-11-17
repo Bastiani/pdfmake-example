@@ -1,0 +1,68 @@
+function buildTableBody(data, columns, header) {
+  let body = [];
+
+  body.push(header);
+
+  data.forEach(row => {
+    const dataRow = [];
+
+    columns.forEach(column => {
+      dataRow.push({ text: row[column] ? row[column].toString() : "" });
+    });
+
+    body.push(dataRow);
+  });
+
+  return body;
+}
+
+function table(data, columns, header) {
+  return {
+    table: {
+      headerRows: 1,
+      widths: ["auto", 50],
+      body: buildTableBody(data, columns, header)
+    },
+    layout: "lightHorizontalLines"
+  };
+}
+
+/*const params = `?opcao=${$("#opcao").val()}&opcao_filtro=${$(
+  "#opcao_filtro"
+).val()}&data_competencia_1=${$(
+  "#data_competencia_1"
+).val()}&data_competencia_2=${$(
+  "#data_competencia_2"
+).val()}&filtro_plano_conta=${$("#filtro_plano_conta").val()}&filtro_pago=${$(
+  "#filtro_pago"
+).val()}`;*/
+
+let items;
+$.getJSON(`contatos/relatorio.json`, data => {
+  items = data;
+})
+  .done(() => {
+    const docDefinition = {
+      content: [
+        table(
+          items,
+          ["nome", "idade"],
+          [
+            { text: "Nome", style: "tableHeader" },
+            { text: "Idade", style: "tableHeader" }
+          ]
+        )
+      ],
+      styles: {
+        tableHeader: {
+          bold: true,
+          fontSize: 13,
+          color: "black"
+        }
+      }
+    };
+    pdfMake.createPdf(docDefinition).open();
+  })
+  .fail(() => {
+    console.log("error");
+  });
