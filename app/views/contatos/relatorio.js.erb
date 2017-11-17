@@ -27,16 +27,6 @@ function table(data, columns, header) {
   };
 }
 
-/*const params = `?opcao=${$("#opcao").val()}&opcao_filtro=${$(
-  "#opcao_filtro"
-).val()}&data_competencia_1=${$(
-  "#data_competencia_1"
-).val()}&data_competencia_2=${$(
-  "#data_competencia_2"
-).val()}&filtro_plano_conta=${$("#filtro_plano_conta").val()}&filtro_pago=${$(
-  "#filtro_pago"
-).val()}`;*/
-
 let items;
 $.getJSON(`contatos/relatorio.json`, data => {
   items = data;
